@@ -22,21 +22,34 @@ namespace ParkMinPackages.PackageManager.Editor
 				accountType = JObject.Parse(json)["type"]?.ToString();
 			}
 			string endpoint = accountType == "Organization" ? "orgs" : "users";
+			string ownerRepositoryEndpoint = $"https://api.github.com/{endpoint}/{escapedOwner}/repos";
+			string[] repositoryEndpoints = accountType != "Organization" && !string.IsNullOrWhiteSpace(personalAccessToken) ? new[] { ownerRepositoryEndpoint, "https://api.github.com/user/repos" } : new[] { ownerRepositoryEndpoint };
 			List<Repo> repositories = new List<Repo>();
-			for (int page = 1; ; page++) {
-				using (UnityWebRequest request = UnityWebRequest.Get($"https://api.github.com/{endpoint}/{escapedOwner}/repos?per_page=100&page={page}")) {
-					string json = await SendBearerRequestAsync(request, personalAccessToken, cancellationToken);
-					List<Repo> batch = JsonConvert.DeserializeObject<List<Repo>>(json);
-					repositories.AddRange(batch);
-					if (batch.Count < 100) return repositories;
+
+			// Repository discovery
+			foreach (string repositoryEndpoint in repositoryEndpoints) {
+				for (int page = 1; ; page++) {
+					using (UnityWebRequest request = UnityWebRequest.Get($"{repositoryEndpoint}?per_page=100&page={page}")) {
+						string json = await SendBearerRequestAsync(request, personalAccessToken, cancellationToken);
+						List<Repo> batch = JsonConvert.DeserializeObject<List<Repo>>(json);
+						repositories.AddRange(batch.Where(repo => string.Equals(repo.owner?.login, owner, StringComparison.OrdinalIgnoreCase)));
+						if (batch.Count < 100) break;
+					}
 				}
 			}
+			return repositories.GroupBy(repo => repo.name, StringComparer.OrdinalIgnoreCase).Select(group => group.First()).ToList();
 		}
-		public class Repo
+        public class Repo
 		{
 			public string name;
 			public string default_branch;
 			public string clone_url;
+			public RepoOwner owner;
+			[JsonProperty("private")] public bool IsPrivate;
+		}
+		public class RepoOwner
+		{
+			public string login;
 		}
 
 		//GetOrganizationLastCommitHashAsync

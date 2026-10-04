@@ -51,7 +51,9 @@ namespace ParkMinPackages.PackageManager.Editor
 			Toggle showDependenciesToggle = rootVisualElement.Q<Toggle>("ShowDependenciesToggle");
 			ScrollView scrollView = rootVisualElement.Q<ScrollView>();
 			VisualElement publicGitPackagesContainer = scrollView.Q<VisualElement>("PublicGitPackagesContainer");
-			VisualElement parkMinPackagesContainer = scrollView.Q<VisualElement>("ParkMinPackagesContainer");
+			VisualElement publicParkMinPackagesContainer = scrollView.Q<VisualElement>("PublicParkMinPackagesContainer");
+			VisualElement privateParkMinPackagesContainer = scrollView.Q<VisualElement>("PrivateParkMinPackagesContainer");
+			VisualElement privateParkMinDevSection = scrollView.Q<VisualElement>("PrivateParkMinDevSection");
 			Label refreshStateLabel = rootVisualElement.Q<Label>("RefreshStateLabel");
 			List<GitItemUI> itemUiList = new List<GitItemUI>();
 			bool showDependencies = EditorPrefs.GetBool(_showDependenciesEditorPrefsKey, false);
@@ -143,7 +145,7 @@ namespace ParkMinPackages.PackageManager.Editor
 				foreach (PackageData packageData in requestAsync) {
 					GitItemUI eachGitItemUI = new GitItemUI(
 						itemTreeAsset,
-						parkMinPackagesContainer,
+						packageData.IsPrivate ? privateParkMinPackagesContainer : publicParkMinPackagesContainer,
 						packageData.DisplayName,
 						packageData.Version,
 						packageData.GitCloneURL,
@@ -156,6 +158,7 @@ namespace ParkMinPackages.PackageManager.Editor
 					itemUiList.Add(eachGitItemUI);
 				}
 
+				privateParkMinDevSection.EnableInClassList("package-section-hidden", privateParkMinPackagesContainer.childCount == 0);
 				refreshStateLabel.style.display = DisplayStyle.None;
 			}
 			catch (OperationCanceledException) { }

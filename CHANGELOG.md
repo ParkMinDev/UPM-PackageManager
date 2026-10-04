@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.4.0] - 2026-10-04
+
+### Added
+- Included accessible private repositories in personal-account discovery when a GitHub Personal Access Token is provided.
+- Split ParkMinDev packages into public and private sections based on GitHub repository visibility, hiding the private section when empty.
+
+### Changed
+- Displayed package locations using the repository name and packagePath while preserving Unity package identities and displayName metadata.
+- Documented repository access permissions and the separate Git authentication required for private package installation.
+
 ## [5.3.2] - 2026-10-04
 
 ### Changed

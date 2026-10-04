@@ -1,5 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
          editor-extension-mode="False">
+    <ui:Style src="PackageManagerWindow.uss"/>
     <ui:Label text="ParkMinDev Package Manager" name="Title"
               style="-unity-text-align: upper-center; -unity-font-style: bold; color: rgb(0, 255, 37);"/>
     <ui:Button text="Packages Folder" name="PacakgesFolderButton"
@@ -22,8 +23,14 @@
     <ui:ScrollView vertical-scroller-visibility="AlwaysVisible" style="padding-left: 10px; padding-right: 0;">
         <ui:Label text="[ Public Git Packages ]" style="margin-top: 6px; margin-bottom: 3px; -unity-font-style: bold; font-size: 15px; color: rgb(138, 180, 248);"/>
         <ui:VisualElement name="PublicGitPackagesContainer"/>
-        <ui:Label text="[ ParkMinDev ]" style="margin-top: 10px; margin-bottom: 3px; -unity-font-style: bold; font-size: 15px; color: rgb(138, 180, 248);"/>
-        <ui:VisualElement name="ParkMinPackagesContainer"/>
+        <ui:VisualElement name="PublicParkMinDevSection">
+            <ui:Label text="[Public ParkMinDev]" class="parkmin-section-title"/>
+            <ui:VisualElement name="PublicParkMinPackagesContainer"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="PrivateParkMinDevSection" class="package-section-hidden">
+            <ui:Label text="[Private ParkMinDev]" class="parkmin-section-title"/>
+            <ui:VisualElement name="PrivateParkMinPackagesContainer"/>
+        </ui:VisualElement>
     </ui:ScrollView>
     <ui:Label text="Refeshing..." name="RefreshStateLabel"
               style="-unity-text-align: upper-center; -unity-font-style: bold;"/>

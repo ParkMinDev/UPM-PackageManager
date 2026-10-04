@@ -52,7 +52,7 @@ namespace ParkMinPackages.PackageManager.Editor
 
 					PackageData packageData = new PackageData();
 					packageData.RepoName = repo.name;
-					packageData.DisplayName = string.IsNullOrWhiteSpace(remotePackageJson.displayName) ? remotePackageJson.name : remotePackageJson.displayName;
+					packageData.DisplayName = string.IsNullOrEmpty(packagePath) ? repo.name : $"{repo.name}/{packagePath}";
 					packageData.Version = remotePackageJson.version;
 					packageData.GitCloneURL = string.IsNullOrEmpty(packagePath)
 						? repo.clone_url
@@ -62,6 +62,7 @@ namespace ParkMinPackages.PackageManager.Editor
 					packageData.RemoteCommitHash = remoteLastCommitHash;
 					packageData.IsEmbed = unityPackageInfo?.source == PackageSource.Embedded;
 					packageData.IsLocal = unityPackageInfo?.source == PackageSource.Local;
+					packageData.IsPrivate = repo.IsPrivate;
 					packageData.GitDependencies = dependencyResolver.ResolveGit(package.gitDependencies);
 					packageData.NuGetDependencies = dependencyResolver.ResolveNuGet(package.nugetDependencies);
 					packageDatas.Add(packageData);

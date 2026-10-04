@@ -1,0 +1,11 @@
+.parkmin-section-title {
+    margin-top: 10px;
+    margin-bottom: 3px;
+    -unity-font-style: bold;
+    font-size: 15px;
+    color: rgb(138, 180, 248);
+}
+
+.package-section-hidden {
+    display: none;
+}

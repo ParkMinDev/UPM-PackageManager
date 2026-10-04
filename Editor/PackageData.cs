@@ -47,6 +47,7 @@ namespace ParkMinPackages.PackageManager.Editor
 		public string CurrentCommitHash;
 		public bool IsEmbed;
 		public bool IsLocal;
+		public bool IsPrivate;
 		public IReadOnlyList<PackageDependencyData> GitDependencies;
 		public IReadOnlyList<PackageDependencyData> NuGetDependencies;
 		public PackageState State
