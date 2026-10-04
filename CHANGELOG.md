@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.3.2] - 2026-10-04
+
+### Changed
+- Standardized the nested-package metadata example to the UPM directory name.
+- Kept package discovery based on parkmin-upm.json; no folder-name filtering was added.
+
 ## [5.3.1] - 2026-10-04
 
 ### Changed

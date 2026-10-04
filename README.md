@@ -19,7 +19,7 @@ ParkMinDev 계정의 Unity 패키지를 조회하고 관리하는 Editor 도구�
   "schemaVersion": 1,
   "packages": [
     {
-      "packagePath": "UPMPackage",
+      "packagePath": "UPM",
       "gitDependencies": [
         {
           "packageName": "com.parkminpackages.foundation",

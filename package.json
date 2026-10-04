@@ -1,7 +1,7 @@
 {
   "name": "com.parkminpackages.packagemanager",
   "displayName": "ParkMinPackages.PackageManager",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "license": "MIT",
   "documentationUrl": "https://github.com/ParkMinDev/UPM-PackageManager#readme",
   "changelogUrl": "https://github.com/ParkMinDev/UPM-PackageManager/blob/main/CHANGELOG.md",
