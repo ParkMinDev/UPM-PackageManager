@@ -27,34 +27,76 @@ namespace ParkMinPackages.PackageManager.Editor
 			string owner = "ParkMinDev";
 			string[] exceptRepos = new string[] { "Package-Dev" };
 
-			VisualTreeAsset mainTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-				"Packages/com.parkminpackages.packagemanager/Editor/PackageManagerWindow.uxml"
-			);
-
-			VisualTreeAsset itemTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-				"Packages/com.parkminpackages.packagemanager/Editor/PackageManagerWindow.Item.uxml"
-			);
-
 			PublicGitRepoDatas publicGitRepoDatas = AssetDatabase.LoadAssetAtPath<PublicGitRepoDatas>(
 				"Packages/com.parkminpackages.packagemanager/PublicGitRepoDatas/PublicGitRepoDatas.asset"
 			);
 
 			rootVisualElement.Clear();
-			rootVisualElement.Add(mainTreeAsset.CloneTree());
 
-			Button pacakgesFolderButton = rootVisualElement.Q<Button>("PacakgesFolderButton");
-			Foldout personalAccessTokenFoldout = rootVisualElement.Q<Foldout>("PersonalAccessTokenFoldout");
-			TextField personalAccessTokenTextField = rootVisualElement.Q<TextField>("PersonalAccessTokenTextField");
-			Button installSelectedButton = rootVisualElement.Q<Button>("InstallSelectedButton");
-			Button removeSelectedButton = rootVisualElement.Q<Button>("RemoveSelectedButton");
-			Button refreshButton = rootVisualElement.Q<Button>("RefreshButton");
-			Toggle showDependenciesToggle = rootVisualElement.Q<Toggle>("ShowDependenciesToggle");
-			ScrollView scrollView = rootVisualElement.Q<ScrollView>();
-			VisualElement publicGitPackagesContainer = scrollView.Q<VisualElement>("PublicGitPackagesContainer");
-			VisualElement publicParkMinPackagesContainer = scrollView.Q<VisualElement>("PublicParkMinPackagesContainer");
-			VisualElement privateParkMinPackagesContainer = scrollView.Q<VisualElement>("PrivateParkMinPackagesContainer");
-			VisualElement privateParkMinDevSection = scrollView.Q<VisualElement>("PrivateParkMinDevSection");
-			Label refreshStateLabel = rootVisualElement.Q<Label>("RefreshStateLabel");
+			// - Window UI -
+			Label title = new Label("ParkMinDev Package Manager");
+			title.style.unityTextAlign = TextAnchor.UpperCenter;
+			title.style.unityFontStyleAndWeight = FontStyle.Bold;
+			title.style.color = (Color)new Color32(0, 255, 37, 255);
+			rootVisualElement.Add(title);
+
+			Button pacakgesFolderButton = new Button { text = "Packages Folder" };
+			pacakgesFolderButton.style.width = 126;
+			pacakgesFolderButton.style.height = 20;
+			pacakgesFolderButton.style.alignSelf = Align.Center;
+			rootVisualElement.Add(pacakgesFolderButton);
+
+			Foldout personalAccessTokenFoldout = new Foldout { text = "GitHub Personal Access Token (비공개 패키지용)", value = false };
+			personalAccessTokenFoldout.style.unityFontStyleAndWeight = FontStyle.Bold;
+			TextField personalAccessTokenTextField = new TextField { tooltip = "공개 패키지는 토큰 없이 사용할 수 있습니다. 비공개 패키지는 GitHub PAT를 입력하세요." };
+			personalAccessTokenTextField.textEdition.placeholder = personalAccessTokenTextField.tooltip;
+			personalAccessTokenFoldout.Add(personalAccessTokenTextField);
+			rootVisualElement.Add(personalAccessTokenFoldout);
+
+			VisualElement selectedActions = new VisualElement();
+			selectedActions.style.flexDirection = FlexDirection.Row;
+			selectedActions.style.justifyContent = Justify.Center;
+			selectedActions.style.flexShrink = 0;
+			Button installSelectedButton = new Button { text = "Install Selected" };
+			Button removeSelectedButton = new Button { text = "Remove Selected" };
+			foreach (Button button in new[] { installSelectedButton, removeSelectedButton }) {
+				button.style.width = 130;
+				button.style.height = 20;
+				selectedActions.Add(button);
+			}
+			rootVisualElement.Add(selectedActions);
+
+			VisualElement refreshActions = new VisualElement();
+			refreshActions.style.flexDirection = FlexDirection.Row;
+			refreshActions.style.justifyContent = Justify.Center;
+			refreshActions.style.alignItems = Align.Center;
+			refreshActions.style.flexShrink = 0;
+			Button refreshButton = new Button { text = "Refresh" };
+			refreshButton.style.width = 100;
+			refreshButton.style.height = 20;
+			Toggle showDependenciesToggle = new Toggle("Show Dependencies");
+			showDependenciesToggle.style.marginLeft = 8;
+			refreshActions.Add(refreshButton);
+			refreshActions.Add(showDependenciesToggle);
+			rootVisualElement.Add(refreshActions);
+
+			// - Package Sections -
+			ScrollView scrollView = new ScrollView { verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible };
+			scrollView.style.flexGrow = 1;
+			scrollView.style.minHeight = 0;
+			scrollView.style.paddingLeft = 10;
+			scrollView.style.paddingRight = 0;
+			scrollView.Add(CreatePackageSection("Public Git Packages", out VisualElement publicGitPackagesContainer));
+			scrollView.Add(CreatePackageSection("Public ParkMinDev", out VisualElement publicParkMinPackagesContainer));
+			VisualElement privateParkMinDevSection = CreatePackageSection("Private ParkMinDev", out VisualElement privateParkMinPackagesContainer);
+			privateParkMinDevSection.style.display = DisplayStyle.None;
+			scrollView.Add(privateParkMinDevSection);
+			rootVisualElement.Add(scrollView);
+
+			Label refreshStateLabel = new Label("Refreshing...");
+			refreshStateLabel.style.unityTextAlign = TextAnchor.UpperCenter;
+			refreshStateLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+			rootVisualElement.Add(refreshStateLabel);
 			List<GitItemUI> itemUiList = new List<GitItemUI>();
 			bool showDependencies = EditorPrefs.GetBool(_showDependenciesEditorPrefsKey, false);
 			showDependenciesToggle.SetValueWithoutNotify(showDependencies);
@@ -117,7 +159,7 @@ namespace ParkMinPackages.PackageManager.Editor
 
 				//Public Repo
 				foreach (PublicGitRepoData data in publicGitRepoDatas.Value) {
-					PublicGitItemUI publicGitItemUI = new PublicGitItemUI(packageCollection, itemTreeAsset, publicGitPackagesContainer,
+					PublicGitItemUI publicGitItemUI = new PublicGitItemUI(packageCollection, publicGitPackagesContainer,
 						data.DisplayName,
 						data.Version,
 						data.CloneURL,
@@ -144,7 +186,6 @@ namespace ParkMinPackages.PackageManager.Editor
 
 				foreach (PackageData packageData in requestAsync) {
 					GitItemUI eachGitItemUI = new GitItemUI(
-						itemTreeAsset,
 						packageData.IsPrivate ? privateParkMinPackagesContainer : publicParkMinPackagesContainer,
 						packageData.DisplayName,
 						packageData.Version,
@@ -158,7 +199,7 @@ namespace ParkMinPackages.PackageManager.Editor
 					itemUiList.Add(eachGitItemUI);
 				}
 
-				privateParkMinDevSection.EnableInClassList("package-section-hidden", privateParkMinPackagesContainer.childCount == 0);
+				privateParkMinDevSection.style.display = privateParkMinPackagesContainer.childCount > 0 ? DisplayStyle.Flex : DisplayStyle.None;
 				refreshStateLabel.style.display = DisplayStyle.None;
 			}
 			catch (OperationCanceledException) { }
@@ -177,19 +218,34 @@ namespace ParkMinPackages.PackageManager.Editor
 
 		CancellationTokenSource _cts;
 
+		static VisualElement CreatePackageSection(string title, out VisualElement packagesContainer) {
+			VisualElement section = new VisualElement();
+			section.style.flexShrink = 0;
+			Label heading = new Label($"[ {title} ]");
+			heading.style.marginTop = 10;
+			heading.style.marginBottom = 3;
+			heading.style.unityFontStyleAndWeight = FontStyle.Bold;
+			heading.style.fontSize = 15;
+			heading.style.color = (Color)new Color32(138, 180, 248, 255);
+			packagesContainer = new VisualElement();
+			packagesContainer.style.flexShrink = 0;
+			section.Add(heading);
+			section.Add(packagesContainer);
+			return section;
+		}
+
 		//Type
 		class PublicGitItemUI : GitItemUI
 		{
 			public PublicGitItemUI(
 				PackageCollection packageCollection,
-				VisualTreeAsset itemTreeAsset,
 				VisualElement parent,
 				string displayName,
 				string version,
 				string gitURL,
 				string packageName,
 				Action afterButtonClickAction
-			) : base(itemTreeAsset, parent, displayName, version, gitURL, packageName, afterButtonClickAction) {
+			) : base(parent, displayName, version, gitURL, packageName, afterButtonClickAction) {
 				UnityEditor.PackageManager.PackageInfo packageInfo = packageCollection.FirstOrDefault(info => info.name == packageName);
 				if (packageInfo != null) {
 					if (packageInfo.source == PackageSource.Embedded) {
@@ -207,14 +263,13 @@ namespace ParkMinPackages.PackageManager.Editor
 		class GitItemUI : ItemUI
 		{
 			public GitItemUI(
-				VisualTreeAsset itemTreeAsset,
 				VisualElement parent,
 				string displayName,
 				string version,
 				string gitURL,
 				string packageName,
 				Action afterButtonClickAction
-			) : base(itemTreeAsset, parent) {
+			) : base(parent) {
 				_gitURL = gitURL;
 				_packageName = packageName;
 				DisplayName = $"{displayName} #{(string.IsNullOrWhiteSpace(version) ? "최신" : version)}";
@@ -249,19 +304,57 @@ namespace ParkMinPackages.PackageManager.Editor
 
 		class ItemUI
 		{
-			public ItemUI(VisualTreeAsset itemTreeAsset, VisualElement parent) {
-				TemplateContainer templateContainer = itemTreeAsset.CloneTree();
-				_toggle = templateContainer.Q<Toggle>();
-				_displayNameLabel = templateContainer.Q<Label>("DisplayNameLabel");
-				_stateLabel = templateContainer.Q<Label>("StateLabel");
-				_dependenciesContainer = templateContainer.Q<VisualElement>("DependenciesContainer");
-				_installButton = templateContainer.Q<Button>("InstallButton");
-				_removeButton = templateContainer.Q<Button>("RemoveButton");
-				_embedButton = templateContainer.Q<Button>("EmbedButton");
+			public ItemUI(VisualElement parent) {
+				// - Package Row -
+				VisualElement item = new VisualElement();
+				item.style.flexShrink = 0;
+				VisualElement row = new VisualElement();
+				row.style.flexDirection = FlexDirection.Row;
+				row.style.justifyContent = Justify.SpaceBetween;
+				row.style.alignItems = Align.Center;
+				row.style.flexShrink = 0;
+
+				VisualElement selection = new VisualElement();
+				selection.style.flexDirection = FlexDirection.Row;
+				selection.style.alignItems = Align.Center;
+				selection.style.flexGrow = 1;
+				selection.style.minWidth = 0;
+				_toggle = new Toggle();
+				_displayNameLabel = new Label();
+				_displayNameLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+				selection.Add(_toggle);
+				selection.Add(_displayNameLabel);
+
+				VisualElement actions = new VisualElement();
+				actions.style.flexDirection = FlexDirection.Row;
+				actions.style.alignItems = Align.Center;
+				actions.style.flexShrink = 0;
+				_stateLabel = new Label();
+				_stateLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+				_installButton = new Button { text = "설치" };
+				_removeButton = new Button { text = "삭제" };
+				_embedButton = new Button { text = "Embed" };
+				actions.Add(_stateLabel);
+				foreach (Button button in new[] { _installButton, _removeButton, _embedButton }) {
+					button.style.unityFontStyleAndWeight = FontStyle.Bold;
+					actions.Add(button);
+				}
+				row.Add(selection);
+				row.Add(actions);
+				item.Add(row);
+
+				// - Dependencies -
+				_dependenciesContainer = new VisualElement();
+				_dependenciesContainer.style.display = DisplayStyle.None;
+				_dependenciesContainer.style.marginLeft = 22;
+				_dependenciesContainer.style.marginRight = 4;
+				_dependenciesContainer.style.marginBottom = 3;
+				_dependenciesContainer.style.flexShrink = 0;
+				item.Add(_dependenciesContainer);
 
 				State = PackageState.UnInstalled;
 
-				parent.Add(templateContainer);
+				parent.Add(item);
 			}
 
 			public void SetDependencies(

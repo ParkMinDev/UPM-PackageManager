@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.4.1] - 2026-10-04
+
+### Changed
+- Built the package manager window and package rows entirely in C#, removing the UXML templates and dedicated stylesheet.
+- Unified public Git, public ParkMinDev, and private ParkMinDev section headings with the same blue, bold, 15-pixel style.
+- Removed UnityUtils from the public package catalog without uninstalling existing project packages.
+
+### Fixed
+- Converted Color32 values explicitly to Color when assigning UI Toolkit style colors.
+
 ## [5.4.0] - 2026-10-04
 
 ### Added
