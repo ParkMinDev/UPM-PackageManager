@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [6.0.1] - 2026-10-04
+
+### Changed
+- Moved Package Manager menu under ParkMinDev.
+
 ## [6.0.0] - 2026-10-04
 
 ### Changed

@@ -1,7 +1,7 @@
 {
   "name": "com.parkmindev.upm.packagemanager",
   "displayName": "ParkMinDev.UPM.PackageManager",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "license": "MIT",
   "documentationUrl": "https://github.com/ParkMinDev/UPM-PackageManager#readme",
   "changelogUrl": "https://github.com/ParkMinDev/UPM-PackageManager/blob/main/CHANGELOG.md",

@@ -5,7 +5,7 @@ namespace ParkMinDev.UPM.PackageManager.Editor
 {
 	internal class Menu
 	{
-		[MenuItem("ParkMinPackages/Package Manager")]
+		[MenuItem("ParkMinDev/Package Manager")]
 		static void Execute() {
 			PackageManagerWindow window = EditorWindow.GetWindow<PackageManagerWindow>();
 			window.titleContent = new GUIContent("ParkMinDev Package Manager");
