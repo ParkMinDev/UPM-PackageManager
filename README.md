@@ -1,6 +1,6 @@
-# ParkMinPackages.PackageManager
+# ParkMinDev.UPM.PackageManager
 
-ParkMinDev 계정의 Unity 패키지를 조회하고 관리하는 Editor 도구입니다. 패키지 식별자는 기존 com.parkminpackages.* 이름을 유지합니다.
+ParkMinDev 계정의 Unity 패키지를 조회하고 관리하는 Editor 도구입니다. 패키지 식별자는 com.parkmindev.* 규칙을 사용합니다.
 
 ## Repository access
 
@@ -32,8 +32,8 @@ ParkMinDev 계정의 Unity 패키지를 조회하고 관리하는 Editor 도구�
       "packagePath": "UPM",
       "gitDependencies": [
         {
-          "packageName": "com.parkminpackages.foundation",
-          "version": "10.1.4",
+          "packageName": "com.parkmindev.upm.foundation",
+          "version": "10.1.5",
           "url": "https://github.com/ParkMinDev/UPM-Foundation.git"
         }
       ],

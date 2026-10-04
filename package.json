@@ -1,15 +1,15 @@
 {
-  "name": "com.parkminpackages.packagemanager",
-  "displayName": "ParkMinPackages.PackageManager",
-  "version": "5.4.1",
+  "name": "com.parkmindev.upm.packagemanager",
+  "displayName": "ParkMinDev.UPM.PackageManager",
+  "version": "5.4.2",
   "license": "MIT",
   "documentationUrl": "https://github.com/ParkMinDev/UPM-PackageManager#readme",
   "changelogUrl": "https://github.com/ParkMinDev/UPM-PackageManager/blob/main/CHANGELOG.md",
   "licensesUrl": "https://github.com/ParkMinDev/UPM-PackageManager/blob/main/LICENSE.md",
   "unity": "6000.5",
-  "description": "Unity package maintained by ParkMinPackages.",
+  "description": "Unity package maintained by ParkMinDev.",
   "author": {
-    "name": "ParkMinPackages",
+    "name": "ParkMinDev",
     "url": "https://github.com/ParkMinDev"
   },
   "dependencies": {

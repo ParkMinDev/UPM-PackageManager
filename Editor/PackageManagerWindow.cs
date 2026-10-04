@@ -28,7 +28,7 @@ namespace ParkMinPackages.PackageManager.Editor
 			string[] exceptRepos = new string[] { "Package-Dev" };
 
 			PublicGitRepoDatas publicGitRepoDatas = AssetDatabase.LoadAssetAtPath<PublicGitRepoDatas>(
-				"Packages/com.parkminpackages.packagemanager/PublicGitRepoDatas/PublicGitRepoDatas.asset"
+				"Packages/com.parkmindev.upm.packagemanager/PublicGitRepoDatas/PublicGitRepoDatas.asset"
 			);
 
 			rootVisualElement.Clear();
@@ -104,7 +104,7 @@ namespace ParkMinPackages.PackageManager.Editor
 			//pacakgesFolderButton 구현
 			pacakgesFolderButton.clicked += async () =>
 			{
-				UnityEngine.Object folder = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Packages/com.parkminpackages.packagemanager/UnityPackages");
+				UnityEngine.Object folder = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Packages/com.parkmindev.upm.packagemanager/UnityPackages");
 				Selection.activeObject = folder;
 				EditorUtility.FocusProjectWindow();
 				EditorGUIUtility.PingObject(folder);

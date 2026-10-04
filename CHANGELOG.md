@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.4.2] - 2026-10-04
+
+### Changed
+- Standardized package identity and display name as `com.parkmindev.upm.packagemanager` / `ParkMinDev.UPM.PackageManager`.
+- Synchronized own-package dependency versions for this release; C# namespaces and assembly names remain unchanged.
+
 ## [5.4.1] - 2026-10-04
 
 ### Changed
