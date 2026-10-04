@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [6.0.0] - 2026-10-04
+
+### Changed
+- Breaking: moved namespaces and assembly names from `ParkMinPackages.PackageManager` to `ParkMinDev.UPM.PackageManager` while preserving namespace suffixes and asset GUIDs.
+- Updated package references, assembly friend declarations, serialized type identifiers, and final dependency versions.
+- Added previous type-location metadata where applicable and preserved existing MovedFrom history.
+
 ## [5.4.3] - 2026-10-04
 
 ### Changed

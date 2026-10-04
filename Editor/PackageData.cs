@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.PackageManager.Editor", sourceAssembly: "ParkMinPackages.PackageManager.Editor", sourceClassName: "GitDependency")]
 	[Serializable]
 	internal class GitDependency
 	{
@@ -12,6 +13,7 @@ namespace ParkMinPackages.PackageManager.Editor
 		[JsonProperty("url")] public string URL;
 	}
 
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.PackageManager.Editor", sourceAssembly: "ParkMinPackages.PackageManager.Editor", sourceClassName: "NuGetDependency")]
 	[Serializable]
 	internal class NuGetDependency
 	{

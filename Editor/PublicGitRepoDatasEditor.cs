@@ -2,8 +2,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.PackageManager.Editor", sourceAssembly: "ParkMinPackages.PackageManager.Editor", sourceClassName: "PublicGitRepoDatasEditor")]
 	[CustomEditor(typeof(PublicGitRepoDatas))]
 	internal class PublicGitRepoDatasEditor : UnityEditor.Editor
 	{

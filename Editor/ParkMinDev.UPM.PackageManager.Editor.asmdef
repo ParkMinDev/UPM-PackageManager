@@ -1,6 +1,6 @@
 {
-  "name": "ParkMinPackages.PackageManager.Editor",
-  "rootNamespace": "ParkMinPackages.PackageManager.Editor",
+  "name": "ParkMinDev.UPM.PackageManager.Editor",
+  "rootNamespace": "ParkMinDev.UPM.PackageManager.Editor",
   "references": [
     "UniTask"
   ],

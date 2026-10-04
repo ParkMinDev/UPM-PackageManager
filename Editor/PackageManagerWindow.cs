@@ -7,11 +7,12 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.PackageManager.Editor", sourceAssembly: "ParkMinPackages.PackageManager.Editor", sourceClassName: "PackageManagerWindow")]
 	internal class PackageManagerWindow : EditorWindow
 	{
-		const string _showDependenciesEditorPrefsKey = "ParkMinPackages.PackageManager.ShowDependencies";
+		const string _showDependenciesEditorPrefsKey = "ParkMinDev.UPM.PackageManager.ShowDependencies";
 
 		async Awaitable CreateGUI() {
 			if (_cts != null) {

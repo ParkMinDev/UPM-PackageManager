@@ -1,6 +1,6 @@
-﻿using UnityEditor;
+using UnityEditor;
 
-namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
 	internal class PersonalAccessTokenManager
 	{

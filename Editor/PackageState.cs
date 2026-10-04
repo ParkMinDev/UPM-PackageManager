@@ -1,4 +1,4 @@
-﻿namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
 	internal enum PackageState
 	{

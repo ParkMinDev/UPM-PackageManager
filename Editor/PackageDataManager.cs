@@ -5,7 +5,7 @@ using System.Threading;
 using UnityEditor.PackageManager;
 using Cysharp.Threading.Tasks;
 
-namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
 	internal static class PackageDataManager
 	{

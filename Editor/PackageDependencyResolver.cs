@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
-namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
 	internal sealed class PackageDependencyResolver
 	{

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ParkMinPackages.PackageManager.Editor
+namespace ParkMinDev.UPM.PackageManager.Editor
 {
+	[UnityEngine.Scripting.APIUpdating.MovedFrom(true, sourceNamespace: "ParkMinPackages.PackageManager.Editor", sourceAssembly: "ParkMinPackages.PackageManager.Editor", sourceClassName: "PublicGitRepoData")]
 	internal class PublicGitRepoData : ScriptableObject
 	{
 		public string DisplayName;
