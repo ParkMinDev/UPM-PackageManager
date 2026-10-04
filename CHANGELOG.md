@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.4.3] - 2026-10-04
+
+### Changed
+- Updated the nested-package documentation example to MediaPipeNativeRuntime/UPM.
+
 ## [5.4.2] - 2026-10-04
 
 ### Changed

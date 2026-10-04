@@ -17,7 +17,7 @@ ParkMinDev 계정의 Unity 패키지를 조회하고 관리하는 Editor 도구�
 - Git 및 NuGet 의존성은 각 저장소 루트의 `parkmin-upm.json`에 패키지별로 작성합니다.
 - `packages` 배열의 각 항목은 하나의 설치 가능한 패키지입니다. `packagePath`는 저장소 루트 기준이며, 루트 패키지는 빈 문자열을 사용합니다.
 - 패키지 식별자와 버전은 지정한 경로의 `package.json`에서 읽습니다.
-- 자체 패키지 목록은 저장소 이름과 `packagePath`를 조합한 위치로 표시합니다. 루트 패키지는 `UPM-Foundation`, 내부 패키지는 `MediaPipe-NativeRuntime/UPM`처럼 표시하며 `package.json`의 `displayName`은 변경하지 않습니다.
+- 자체 패키지 목록은 저장소 이름과 `packagePath`를 조합한 위치로 표시합니다. 루트 패키지는 `UPM-Foundation`, 내부 패키지는 `MediaPipeNativeRuntime/UPM`처럼 표시하며 `package.json`의 `displayName`은 변경하지 않습니다.
 - 개인 계정과 조직을 모두 조회하며, 새 메타데이터가 없으면 기존 `parkmin-dependencies.json`을 읽습니다. 두 파일 모두 없으면 저장소를 제외합니다.
 - 새 파일이 있으면 새 파일을 우선합니다. 잘못된 형식이나 지원하지 않는 스키마 버전은 오류로 표시합니다.
 - 로컬 폴더로 연결된 패키지는 로컬 연결 상태로 표시합니다.
