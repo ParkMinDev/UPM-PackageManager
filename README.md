@@ -23,8 +23,8 @@ ParkMinDev 계정의 Unity 패키지를 조회하고 관리하는 Editor 도구�
       "gitDependencies": [
         {
           "packageName": "com.parkminpackages.foundation",
-          "version": "10.1.3",
-          "url": "https://github.com/ParkMinDev/Foundation.git"
+          "version": "10.1.4",
+          "url": "https://github.com/ParkMinDev/UPM-Foundation.git"
         }
       ],
       "nugetDependencies": [

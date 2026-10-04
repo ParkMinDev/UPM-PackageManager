@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.3.1] - 2026-10-04
+
+### Changed
+- Renamed the repository to UPM-PackageManager and updated repository links without changing the Unity package identity, namespaces, assemblies, or asset GUIDs.
+- Kept package discovery based on parkmin-upm.json rather than the repository name prefix.
+
 ## [5.3.0] - 2026-10-04
 
 ### Changed
