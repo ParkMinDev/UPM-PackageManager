@@ -24,7 +24,7 @@ namespace ParkMinPackages.PackageManager.Editor
 
 			//초기화
 			string personalAccessToken = PersonalAccessTokenManager.LoadToken();
-			string organization = "ParkMinPackages";
+			string owner = "ParkMinDev";
 			string[] exceptRepos = new string[] { "Package-Dev" };
 
 			VisualTreeAsset mainTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
@@ -131,9 +131,9 @@ namespace ParkMinPackages.PackageManager.Editor
 				}
 
 				//Private Organization Repo
-				List<PackageData> requestAsync = await PackageDataManager.RequestToOrganizationAsync(
+				List<PackageData> requestAsync = await PackageDataManager.RequestToOwnerAsync(
 					personalAccessToken,
-					organization,
+					owner,
 					exceptRepos,
 					packageCollection,
 					dependencyResolver,
@@ -301,6 +301,13 @@ namespace ParkMinPackages.PackageManager.Editor
 							_installButton.enabledSelf = true;
 							_removeButton.enabledSelf = true;
 							_embedButton.enabledSelf = true;
+							_stateLabel.style.color = new StyleColor(Color.green);
+							break;
+						case PackageState.Local:
+							_stateLabel.text = "로컬 연결";
+							_installButton.enabledSelf = false;
+							_removeButton.enabledSelf = true;
+							_embedButton.enabledSelf = false;
 							_stateLabel.style.color = new StyleColor(Color.green);
 							break;
 						case PackageState.Embedded:

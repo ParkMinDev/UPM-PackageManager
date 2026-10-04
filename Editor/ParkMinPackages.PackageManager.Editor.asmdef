@@ -1,7 +1,9 @@
 {
   "name": "ParkMinPackages.PackageManager.Editor",
   "rootNamespace": "ParkMinPackages.PackageManager.Editor",
-  "references": [],
+  "references": [
+    "UniTask"
+  ],
   "includePlatforms": [
     "Editor"
   ],

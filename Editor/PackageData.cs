@@ -46,6 +46,7 @@ namespace ParkMinPackages.PackageManager.Editor
 		public string RemoteCommitHash;
 		public string CurrentCommitHash;
 		public bool IsEmbed;
+		public bool IsLocal;
 		public IReadOnlyList<PackageDependencyData> GitDependencies;
 		public IReadOnlyList<PackageDependencyData> NuGetDependencies;
 		public PackageState State
@@ -54,6 +55,9 @@ namespace ParkMinPackages.PackageManager.Editor
 			{
 				if (IsEmbed) {
 					return PackageState.Embedded;
+				}
+				if (IsLocal) {
+					return PackageState.Local;
 				}
 
 				if (CurrentCommitHash == null) {

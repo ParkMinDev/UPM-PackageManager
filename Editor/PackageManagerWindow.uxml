@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
          editor-extension-mode="False">
-    <ui:Label text="ParkMinPackages Package Manager" name="Title"
+    <ui:Label text="ParkMinDev Package Manager" name="Title"
               style="-unity-text-align: upper-center; -unity-font-style: bold; color: rgb(0, 255, 37);"/>
     <ui:Button text="Packages Folder" name="PacakgesFolderButton"
                style="width: 126px; height: 20px; align-self: center;"/>
@@ -22,7 +22,7 @@
     <ui:ScrollView vertical-scroller-visibility="AlwaysVisible" style="padding-left: 10px; padding-right: 0;">
         <ui:Label text="[ Public Git Packages ]" style="margin-top: 6px; margin-bottom: 3px; -unity-font-style: bold; font-size: 15px; color: rgb(138, 180, 248);"/>
         <ui:VisualElement name="PublicGitPackagesContainer"/>
-        <ui:Label text="[ ParkMinPackages ]" style="margin-top: 10px; margin-bottom: 3px; -unity-font-style: bold; font-size: 15px; color: rgb(138, 180, 248);"/>
+        <ui:Label text="[ ParkMinDev ]" style="margin-top: 10px; margin-bottom: 3px; -unity-font-style: bold; font-size: 15px; color: rgb(138, 180, 248);"/>
         <ui:VisualElement name="ParkMinPackagesContainer"/>
     </ui:ScrollView>
     <ui:Label text="Refeshing..." name="RefreshStateLabel"

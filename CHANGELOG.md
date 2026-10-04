@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [5.3.0] - 2026-10-04
+
+### Changed
+- Moved repository links and dependency URLs to ParkMinDev while preserving the package identity.
+- Replaced repository dependency metadata with parkmin-upm.json and aligned ParkMin dependency release versions.
+- Added user/organization repository discovery, paginated listings, multiple UPM packages per repository, and legacy metadata fallback.
+- Recognized locally linked packages in the package list.
+
 ## [5.2.1] - 2026-08-27
 
 ### Added

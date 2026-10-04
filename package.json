@@ -1,16 +1,16 @@
 {
   "name": "com.parkminpackages.packagemanager",
   "displayName": "ParkMinPackages.PackageManager",
-  "version": "5.2.1",
+  "version": "5.3.0",
   "license": "MIT",
-  "documentationUrl": "https://github.com/ParkMinPackages/PackageManager#readme",
-  "changelogUrl": "https://github.com/ParkMinPackages/PackageManager/blob/main/CHANGELOG.md",
-  "licensesUrl": "https://github.com/ParkMinPackages/PackageManager/blob/main/LICENSE.md",
+  "documentationUrl": "https://github.com/ParkMinDev/PackageManager#readme",
+  "changelogUrl": "https://github.com/ParkMinDev/PackageManager/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/ParkMinDev/PackageManager/blob/main/LICENSE.md",
   "unity": "6000.5",
   "description": "Unity package maintained by ParkMinPackages.",
   "author": {
     "name": "ParkMinPackages",
-    "url": "https://github.com/ParkMinPackages"
+    "url": "https://github.com/ParkMinDev"
   },
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.2"

@@ -6,5 +6,6 @@
 		Updateable,
 		Installed,
 		Embedded,
+		Local,
 	}
 }

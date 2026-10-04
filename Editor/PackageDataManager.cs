@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEditor.PackageManager;
-using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace ParkMinPackages.PackageManager.Editor
 {
@@ -15,59 +15,57 @@ namespace ParkMinPackages.PackageManager.Editor
 		// }
 
 
-		public static async Awaitable<List<PackageData>> RequestToOrganizationAsync(
+		public static async UniTask<List<PackageData>> RequestToOwnerAsync(
 			string personalAccessToken,
-			string organization,
+			string owner,
 			string[] exceptRepos,
 			PackageCollection unityPackageCollection,
 			PackageDependencyResolver dependencyResolver,
 			CancellationToken cancellationToken
 		) {
 			List<PackageData> packageDatas = new List<PackageData>();
-			HashSet<string> exceptRepoSet = new HashSet<string>(exceptRepos);
+			HashSet<string> exceptRepoSet = new HashSet<string>(exceptRepos, StringComparer.OrdinalIgnoreCase);
 
-			List<GitRestAPI.Repo> repoList = await GitRestAPI.GetOrganizationReposAsync(personalAccessToken, organization);
+			List<GitRestAPI.Repo> repoList = await GitRestAPI.GetOwnerReposAsync(personalAccessToken, owner, cancellationToken);
 			if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
 			foreach (GitRestAPI.Repo repo in repoList) {
 				if (exceptRepoSet.Contains(repo.name))
 					continue;
 
-				GitRestAPI.PackageDependenciesJson remoteDependenciesJson = await GitRestAPI.GetPackageDependenciesJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch);
-				if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+				GitRestAPI.UpmInfoJson info = await GitRestAPI.GetUpmInfoAsync(personalAccessToken, owner, repo.name, repo.default_branch, cancellationToken);
+				if (info == null || info.packages.Count == 0) continue;
+				string remoteLastCommitHash = await GitRestAPI.GetLastCommitHashAsync(personalAccessToken, owner, repo.name, repo.default_branch, cancellationToken);
 
-				string[] packagePathSegments = string.IsNullOrWhiteSpace(remoteDependenciesJson.packagePath)
-					? Array.Empty<string>()
-					: remoteDependenciesJson.packagePath.Replace('\\', '/').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-				if (packagePathSegments.Any(segment => segment == "." || segment == "..")) {
-					throw new InvalidOperationException($"Invalid packagePath in {repo.name}/parkmin-dependencies.json");
+				foreach (GitRestAPI.UpmPackageJson package in info.packages) {
+					string[] packagePathSegments = string.IsNullOrWhiteSpace(package.packagePath)
+						? Array.Empty<string>()
+						: package.packagePath.Replace('\\', '/').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+					if (packagePathSegments.Any(segment => segment == "." || segment == ".." || segment.Contains(":") || segment.Contains("?") || segment.Contains("#"))) {
+						throw new InvalidOperationException($"Invalid packagePath in {repo.name}/parkmin-upm.json");
+					}
+
+					string packagePath = string.Join("/", packagePathSegments);
+					GitRestAPI.PackageJson remotePackageJson = await GitRestAPI.GetPackageJsonAsync(personalAccessToken, owner, repo.name, repo.default_branch, packagePath, cancellationToken);
+					if (packageDatas.Any(data => data.PackageName == remotePackageJson.name)) throw new InvalidOperationException($"Duplicate package declaration: {remotePackageJson.name}");
+					PackageInfo unityPackageInfo = unityPackageCollection.FirstOrDefault(packageInfo => packageInfo.name == remotePackageJson.name);
+
+					PackageData packageData = new PackageData();
+					packageData.RepoName = repo.name;
+					packageData.DisplayName = string.IsNullOrWhiteSpace(remotePackageJson.displayName) ? remotePackageJson.name : remotePackageJson.displayName;
+					packageData.Version = remotePackageJson.version;
+					packageData.GitCloneURL = string.IsNullOrEmpty(packagePath)
+						? repo.clone_url
+						: $"{repo.clone_url}?path=/{string.Join("/", packagePathSegments.Select(Uri.EscapeDataString))}";
+					packageData.PackageName = remotePackageJson.name;
+					packageData.CurrentCommitHash = unityPackageInfo?.git?.hash;
+					packageData.RemoteCommitHash = remoteLastCommitHash;
+					packageData.IsEmbed = unityPackageInfo?.source == PackageSource.Embedded;
+					packageData.IsLocal = unityPackageInfo?.source == PackageSource.Local;
+					packageData.GitDependencies = dependencyResolver.ResolveGit(package.gitDependencies);
+					packageData.NuGetDependencies = dependencyResolver.ResolveNuGet(package.nugetDependencies);
+					packageDatas.Add(packageData);
 				}
-
-				string packagePath = string.Join("/", packagePathSegments);
-				GitRestAPI.PackageJson remotePackageJson = await GitRestAPI.GetPackageJsonAsync(personalAccessToken, organization, repo.name, repo.default_branch, packagePath);
-				if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
-
-				string remoteLastCommitHash = await GitRestAPI.GetOrganizationLastCommitHashAsync(personalAccessToken, organization, repo.name, repo.default_branch);
-				if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
-
-				PackageInfo unityPackageInfo = unityPackageCollection.FirstOrDefault(unityPackageInfo => unityPackageInfo.name == remotePackageJson.name);
-
-
-				PackageData packageData = new PackageData();
-				packageData.RepoName = repo.name;
-				packageData.DisplayName = remotePackageJson.displayName;
-				packageData.Version = remotePackageJson.version;
-				packageData.GitCloneURL = string.IsNullOrEmpty(packagePath)
-					? repo.clone_url
-					: $"{repo.clone_url}?path=/{string.Join("/", packagePathSegments.Select(Uri.EscapeDataString))}";
-				packageData.PackageName = remotePackageJson.name;
-				packageData.CurrentCommitHash = unityPackageInfo == null || unityPackageInfo.git == null ? null : unityPackageInfo.git.hash;
-				packageData.RemoteCommitHash = remoteLastCommitHash;
-				packageData.IsEmbed = unityPackageInfo == null ? false : unityPackageInfo.source == PackageSource.Embedded;
-				packageData.GitDependencies = dependencyResolver.ResolveGit(remoteDependenciesJson.gitDependencies);
-				packageData.NuGetDependencies = dependencyResolver.ResolveNuGet(remoteDependenciesJson.nugetDependencies);
-
-				packageDatas.Add(packageData);
 			}
 
 
