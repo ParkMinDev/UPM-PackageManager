@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this package will be documented in this file.
 
+## [6.0.2] - 2026-10-26
+
+### Added
+- Registered SGG PerfMeter 2026.10.12-1 in the public Git package catalog with a pinned Git URL.
+
 ## [6.0.1] - 2026-10-04
 
 ### Changed
